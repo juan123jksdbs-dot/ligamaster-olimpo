@@ -136,7 +136,26 @@ async function cargarConfigLiga() {
 
     actualizarResumenConfig();
     llenarSelectorCategoriasRol();
+    llenarSelectorCategoriasEquipo();
   } catch(e) { console.error('Error config:', e); }
+}
+
+function llenarSelectorCategoriasEquipo() {
+  const sel = document.getElementById('form-equipo-categoria');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Sin categoría</option>';
+  
+  const cats = [];
+  if (state.config.tipo_liga === 'Fútbol Soccer' || state.config.tipo_liga === 'Ambas') {
+    (state.config.categorias_soccer || []).forEach(c => cats.push(c.name));
+  }
+  if (state.config.tipo_liga === 'Fútbol 7' || state.config.tipo_liga === 'Ambas') {
+    (state.config.categorias_fut7 || []).forEach(c => cats.push(c.name));
+  }
+  
+  cats.forEach(c => {
+    sel.innerHTML += `<option value="${c}">${c}</option>`;
+  });
 }
 
 function llenarSelectorCategoriasRol() {
@@ -377,12 +396,19 @@ async function cargarEquipos(){
 }
 function renderEquipos(){
   const tb=document.getElementById('equipos-table');if(!tb)return;
-  if(!state.equipos.length){tb.innerHTML=`<tr><td colspan="4" class="empty-state">No hay equipos.</td></tr>`;return;}
-  tb.innerHTML=state.equipos.map(e=>`<tr><td>${escHtml(e.nombre)}</td><td>${e.entrenador||'—'}</td><td>${e.escudo_url?`<a href="${e.escudo_url}" target="_blank">Ver</a>`:'—'}</td><td><button class="btn btn-sm btn-danger" onclick="eliminarEquipo(${e.id})">Eliminar</button></td></tr>`).join('');
+  if(!state.equipos.length){tb.innerHTML=`<tr><td colspan="5" class="empty-state">No hay equipos.</td></tr>`;return;}
+  tb.innerHTML=state.equipos.map(e=>`<tr><td>${escHtml(e.nombre)}</td><td>${escHtml(e.categoria || '—')}</td><td>${e.entrenador||'—'}</td><td>${e.escudo_url?`<a href="${e.escudo_url}" target="_blank">Ver</a>`:'—'}</td><td><button class="btn btn-sm btn-danger" onclick="eliminarEquipo(${e.id})">Eliminar</button></td></tr>`).join('');
 }
 async function guardarEquipo(){
-  const n=document.getElementById('form-equipo-nombre').value;if(!n){toast('El nombre es obligatorio.','error');return;}
-  try{const r=await apiFetch('/organizador/equipos',{method:'POST',body:JSON.stringify({nombre:n,entrenador:document.getElementById('form-equipo-entrenador').value,escudo_url:document.getElementById('form-equipo-escudo').value})});
+  const n=document.getElementById('form-equipo-nombre').value;
+  const cat=document.getElementById('form-equipo-categoria').value;
+  if(!n){toast('El nombre es obligatorio.','error');return;}
+  try{const r=await apiFetch('/organizador/equipos',{method:'POST',body:JSON.stringify({
+    nombre:n,
+    categoria:cat,
+    entrenador:document.getElementById('form-equipo-entrenador').value,
+    escudo_url:document.getElementById('form-equipo-escudo').value
+  })});
     if(!r||!r.ok)throw new Error((await r.json()).error||'Error');cerrarModal('modal-agregar-equipo');toast('Equipo creado.','success');await cargarEquipos();}
   catch(err){toast(err.message,'error');}
 }

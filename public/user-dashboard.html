@@ -220,10 +220,10 @@
       <div class="data-table">
         <table>
           <thead>
-            <tr><th>Nombre</th><th>Entrenador</th><th>Escudo</th><th>Acciones</th></tr>
+            <tr><th>Nombre</th><th>Categoría</th><th>Entrenador</th><th>Escudo</th><th>Acciones</th></tr>
           </thead>
           <tbody id="equipos-table">
-            <tr><td colspan="4" class="empty-state">Cargando equipos...</td></tr>
+            <tr><td colspan="5" class="empty-state">Cargando equipos...</td></tr>
           </tbody>
         </table>
       </div>
@@ -366,6 +366,12 @@
         <div class="form-group"><label>Nombre del equipo</label><input type="text" id="form-equipo-nombre" required></div>
         <div class="form-group"><label>Entrenador</label><input type="text" id="form-equipo-entrenador"></div>
         <div class="form-group"><label>URL de escudo</label><input type="url" id="form-equipo-escudo"></div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="form-equipo-categoria">
+            <option value="">Cargando categorías...</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="modal-footer">

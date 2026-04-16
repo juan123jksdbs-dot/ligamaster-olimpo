@@ -311,9 +311,9 @@ class OrganizadorController {
 
       const torneoId = await this.getOrCreateTorneo(tenantId);
       const resultado = await pool.query(
-        `INSERT INTO equipos (tenant_id, torneo_id, nombre, entrenador, escudo_url)
-         VALUES ($1, $2, $3, $4, $5) RETURNING id, nombre, entrenador, escudo_url`,
-        [tenantId, torneoId, nombre, entrenador || null, escudo_url || null]
+        `INSERT INTO equipos (tenant_id, torneo_id, nombre, entrenador, escudo_url, categoria)
+         VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, entrenador, escudo_url, categoria`,
+        [tenantId, torneoId, nombre, entrenador || null, escudo_url || null, req.body.categoria || null]
       );
 
       res.status(201).json({ mensaje: 'Equipo registrado correctamente.', equipo: resultado.rows[0] });
@@ -330,9 +330,9 @@ class OrganizadorController {
       const { nombre, entrenador, escudo_url } = req.body;
 
       const resultado = await pool.query(
-        `UPDATE equipos SET nombre = $1, entrenador = $2, escudo_url = $3
-         WHERE id = $4 AND tenant_id = $5 RETURNING id`,
-        [nombre, entrenador || null, escudo_url || null, equipoId, tenantId]
+        `UPDATE equipos SET nombre = $1, entrenador = $2, escudo_url = $3, categoria = $4
+         WHERE id = $5 AND tenant_id = $6 RETURNING id`,
+        [nombre, entrenador || null, escudo_url || null, req.body.categoria || null, equipoId, tenantId]
       );
 
       if (resultado.rows.length === 0) {
@@ -896,7 +896,7 @@ class OrganizadorController {
       res.json({ mensaje: 'Configuración guardada correctamente.' });
     } catch (err) {
       console.error('Error updateConfiguracionLiga:', err);
-      res.status(500).json({ error: 'Error al guardar configuración' });
+      res.status(500).json({ error: 'Error al guardar configuración: ' + err.message });
     }
   }
 
