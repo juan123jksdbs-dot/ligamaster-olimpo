@@ -320,6 +320,9 @@ document.getElementById('equipo-next-1').addEventListener('click', () => {
   document.getElementById('equipo-liga-label').textContent = state.equipo.ligaNombre;
   document.getElementById('equipo-nombre').value = '';
   document.getElementById('equipo-nombre-status').style.display = 'none';
+  showStep('equipo', 2);
+});
+
 document.getElementById('equipo-categoria').addEventListener('change', (e) => {
   const opt = e.target.options[e.target.selectedIndex];
   state.equipo.categoria = e.target.value;
