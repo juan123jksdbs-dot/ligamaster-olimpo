@@ -1002,6 +1002,8 @@ class OrganizadorController {
       console.error('Error darDeBajaJugador:', err);
       res.status(500).json({ error: 'Error al dar de baja al jugador' });
     }
+  }
+
   // ── Finalizar Torneo (Cierra el ciclo y obliga a renovación) ──
   async finalizarTorneo(req, res) {
     try {
