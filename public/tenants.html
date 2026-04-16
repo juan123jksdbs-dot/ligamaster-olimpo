@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LigaMaster — Gestión de Ligas</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-text">⚽ LigaMaster</span>
+      <span class="logo-badge">SuperAdmin</span>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section">Principal</span>
+      <a href="dashboard.html"><span class="icon">📊</span> Dashboard</a>
+      <a href="tenants.html" class="active"><span class="icon">🏟️</span> Ligas (Tenants)</a>
+      <span class="nav-section">Cuenta</span>
+      <a href="#" id="btn-logout"><span class="icon">🚪</span> Cerrar sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="sidebar-usuario">Cargando...</div>
+    </div>
+  </aside>
+
+  <!-- ════════ CONTENIDO ════════ -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Gestión de Ligas</h1>
+      <p>Alta, baja, edición y control de suscripciones de cada liga</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>🏟️ Todas las Ligas</h3>
+        <button class="btn btn-success" id="btn-nueva-liga">
+          + Nueva Liga
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Liga</th>
+              <th>Slug</th>
+              <th>Plan</th>
+              <th>Organizador</th>
+              <th>Estatus</th>
+              <th>Vencimiento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tenants-tbody">
+            <tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text2)">
+              <span class="spinner"></span> Cargando ligas...
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: Crear / Editar Liga
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-tenant">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Nueva Liga</h3>
+      <button class="modal-close" onclick="cerrarModal('modal-tenant')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="tenant-id">
+
+      <p class="form-section-title">Datos de la Liga</p>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre de la Liga *</label>
+          <input type="text" id="f-nombre" placeholder="Liga Toluca FC">
+        </div>
+        <div class="form-group">
+          <label>Slug (URL amigable) *</label>
+          <input type="text" id="f-slug" placeholder="liga-toluca">
+        </div>
+        <div class="form-group">
+          <label>Email de contacto *</label>
+          <input type="email" id="f-email" placeholder="contacto@liga.com">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="f-telefono" placeholder="722-123-4567">
+        </div>
+        <div class="form-group">
+          <label>Plan *</label>
+          <select id="f-plan">
+            <option value="3 Meses">📆 3 Meses — $299/mes</option>
+            <option value="6 Meses">📅 6 Meses — $599/mes</option>
+            <option value="1 Año">🗓️ 1 Año — $999/mes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Sección solo visible al CREAR (no al editar) -->
+      <div id="seccion-organizador">
+        <p class="form-section-title">Datos del Organizador (opcional)</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" id="f-org-nombre" placeholder="Carlos Mendoza">
+          </div>
+          <div class="form-group">
+            <label>Email del organizador</label>
+            <input type="email" id="f-org-email" placeholder="carlos@liga.com">
+          </div>
+          <div class="form-group">
+            <label>Contraseña inicial</label>
+            <input type="password" id="f-org-password" placeholder="mínimo 6 caracteres">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModal('modal-tenant')">Cancelar</button>
+      <button class="btn btn-success" id="btn-guardar-tenant">Guardar Liga</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: Simulación de Pago
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-pago">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💳 Confirmar Pago</h3>
+      <button class="modal-close" onclick="cerrarModal('modal-pago')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text2); margin-bottom:18px; font-size:13px;">
+        Simula la confirmación de un pago. Esto activará la liga y extenderá su suscripción 30 días.
+      </p>
+      <input type="hidden" id="pago-tenant-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Liga</label>
+          <input type="text" id="pago-nombre-liga" readonly style="opacity:0.6;">
+        </div>
+        <div class="form-group">
+          <label>Monto ($MXN) *</label>
+          <input type="number" id="pago-monto" placeholder="599.00" min="1" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Método de Pago</label>
+          <select id="pago-metodo">
+            <option value="Simulado">Simulado (Prueba)</option>
+            <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
+            <option value="Transferencia">Transferencia Bancaria</option>
+            <option value="Efectivo">Efectivo</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="form-section-title">Enviar Recordatorio de Pago</p>
+      <div class="form-group">
+        <label>Mensaje para el organizador</label>
+        <textarea id="recordatorio-msg" placeholder="Tu suscripción está por vencer..."></textarea>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="btn-enviar-recordatorio" style="margin-top:6px;">
+        📧 Solo enviar recordatorio (sin confirmar pago)
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModal('modal-pago')">Cancelar</button>
+      <button class="btn btn-success" id="btn-confirmar-pago">✅ Confirmar Pago y Activar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: Historial de Suscripciones
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-historial">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <h3>📋 Historial de Pagos</h3>
+      <button class="modal-close" onclick="cerrarModal('modal-historial')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Método</th>
+              <th>Periodo</th>
+              <th>Estatus</th>
+            </tr>
+          </thead>
+          <tbody id="historial-tbody">
+            <tr><td colspan="5" style="text-align:center; padding:20px;">
+              <span class="spinner"></span>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/utils.js"></script>
+<script src="js/tenants.js"></script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LigaMaster — Panel del Capitán</title>
+  <meta name="description" content="Panel del capitán: gestiona tu equipo y jugadores en LigaMaster.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ── Estilos específicos del panel capitán ── */
+    :root {
+      --cap-green:  #00e676;
+      --cap-green2: #00c853;
+      --cap-blue:   #2979ff;
+      --cap-gold:   #ffd600;
+    }
+
+    /* Sidebar accent capitán */
+    .sidebar-logo .logo-badge { background: var(--cap-green); color: #050d0a; }
+    .sidebar-nav a.active,
+    .sidebar-nav a:hover { border-left-color: var(--cap-green); }
+
+    /* Cards de métricas capitán */
+    .metric-card.cap-green::before { background: var(--cap-green); }
+
+    /* Avatar jugador en tabla */
+    .jugador-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .jugador-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .jugador-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .jugador-nombre {
+      font-weight: 600;
+      font-size: 13.5px;
+      color: var(--text);
+    }
+
+    .jugador-numero {
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    /* Doc badge */
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .doc-ok   { background: rgba(0,230,118,0.12); color: #00e676; border: 1px solid rgba(0,230,118,0.25); }
+    .doc-miss { background: rgba(139,148,158,0.12); color: var(--text2); border: 1px solid var(--border); }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.drag-over {
+      border-color: var(--cap-green);
+      background: rgba(0,230,118,0.04);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-zone .upload-icon { font-size: 28px; margin-bottom: 8px; }
+    .upload-zone .upload-label { font-size: 13px; color: var(--text2); }
+    .upload-zone .upload-hint  { font-size: 11px; color: var(--text3, #5c6e85); margin-top: 4px; }
+
+    .upload-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: rgba(0,230,118,0.07);
+      border: 1px solid rgba(0,230,118,0.2);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .upload-preview .preview-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    /* Equipo info card */
+    .equipo-hero {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .equipo-escudo {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      flex-shrink: 0;
+    }
+
+    .equipo-info h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .equipo-info .liga-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,230,118,0.1);
+      border: 1px solid rgba(0,230,118,0.25);
+      color: var(--cap-green);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    /* Sección Suscripción */
+    .suscripcion-card {
+      background: linear-gradient(145deg, rgba(0,230,118,0.07), var(--bg2));
+      border: 1px solid rgba(0,230,118,0.2);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .suscripcion-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .status-dot-big {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-dot-big.active {
+      background: var(--cap-green);
+      box-shadow: 0 0 10px rgba(0,230,118,0.5);
+      animation: pulse-big 2s ease-in-out infinite;
+    }
+
+    .status-dot-big.inactive { background: var(--danger); }
+
+    @keyframes pulse-big {
+      0%,100% { opacity:1; transform: scale(1); }
+      50% { opacity:0.6; transform: scale(0.85); }
+    }
+
+    /* Sección placeholder */
+    .section-coming {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text2);
+    }
+
+    .section-coming .coming-icon { font-size: 48px; margin-bottom: 12px; }
+    .section-coming h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .section-coming p { font-size: 13px; }
+
+    /* Acciones rápidas */
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    /* Toasts en el panel */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-text">⚽ LigaMaster</span>
+    <span class="logo-badge">Capitán</span>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-section">Mi Equipo</div>
+    <a href="#" class="active" data-section="equipo">
+      <span class="icon">🏠</span> Inicio
+    </a>
+    <a href="#" data-section="jugadores">
+      <span class="icon">👥</span> Mis Jugadores
+    </a>
+    <a href="#" data-section="calendario">
+      <span class="icon">📅</span> Calendario
+    </a>
+    <a href="#" data-section="posiciones">
+      <span class="icon">📊</span> Posiciones
+    </a>
+
+    <div class="nav-section" style="margin-top:8px;">Cuenta</div>
+    <a href="#" data-section="suscripcion">
+      <span class="icon">💳</span> Suscripción
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    <div id="sidebar-user-name" style="font-weight:600; color:var(--text); font-size:13px;">—</div>
+    <div id="sidebar-equipo-name" style="font-size:11px; margin-top:2px;">—</div>
+    <button id="btn-logout" class="btn btn-ghost btn-sm" style="margin-top:10px; width:100%; justify-content:center;">
+      🚪 Cerrar sesión
+    </button>
+  </div>
+</aside>
+
+<!-- ══ CONTENIDO PRINCIPAL ══ -->
+<main class="main-content">
+
+  <!-- ── SECCIÓN: Mi Equipo ── -->
+  <section id="section-equipo">
+    <div class="page-header">
+      <h1>Mi Equipo</h1>
+      <p>Información general de tu equipo e indicadores clave</p>
+    </div>
+
+    <!-- Tarjeta del equipo -->
+    <div class="card" id="equipo-info-card">
+      <div class="equipo-hero">
+        <div class="equipo-escudo" id="equipo-escudo">⚽</div>
+        <div class="equipo-info">
+          <h2 id="equipo-nombre-display">Cargando...</h2>
+          <div class="liga-tag" id="equipo-liga-tag">🏆 —</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:8px;" id="equipo-torneo-display">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Métricas rápidas -->
+    <div class="metrics-grid">
+      <div class="metric-card cap-green">
+        <div class="metric-label">Jugadores</div>
+        <div class="metric-value" id="metric-jugadores">—</div>
+        <div class="metric-sub">Registrados en plantilla</div>
+      </div>
+      <div class="metric-card blue">
+        <div class="metric-label">Docs completos</div>
+        <div class="metric-value" id="metric-docs">—</div>
+        <div class="metric-sub">INE + Acta enviados</div>
+      </div>
+      <div class="metric-card yellow">
+        <div class="metric-label">Docs pendientes</div>
+        <div class="metric-value" id="metric-pendientes">—</div>
+        <div class="metric-sub">Jugadores sin documentos</div>
+      </div>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div class="quick-actions">
+      <button class="btn btn-success" id="btn-agregar-jugador-quick">
+        ➕ Agregar Jugador
+      </button>
+    </div>
+
+    <!-- Mini tabla de jugadores recientes -->
+    <div class="card">
+      <div class="card-header">
+        <h3>👥 Jugadores recientes</h3>
+        <button class="btn btn-ghost btn-sm" data-section="jugadores" id="btn-ver-todos">Ver todos →</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>Posición</th>
+              <th>Foto</th>
+              <th>INE</th>
+              <th>Acta</th>
+            </tr>
+          </thead>
+          <tbody id="mini-jugadores-tbody">
+            <tr><td colspan="5" style="text-align:center; color:var(--text2); padding:30px;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: Mis Jugadores ── -->
+  <section id="section-jugadores" style="display:none;">
+    <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h1>Mis Jugadores</h1>
+        <p>Gestiona la plantilla completa de tu equipo</p>
+      </div>
+      <button class="btn btn-success" id="btn-agregar-jugador">
+        ➕ Agregar Jugador
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Plantilla completa</h3>
+        <input type="text" id="jugador-search" placeholder="🔍 Buscar jugador..."
+               style="background:var(--bg3); border:1px solid var(--border); border-radius:7px; padding:7px 12px; color:var(--text); font-size:13px; width:220px;">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>#</th>
+              <th>Posición</th>
+              <th>Nacimiento</th>
+              <th>Foto</th>
+              <th>INE</th>
+              <th>Acta</th>
+              <th>Estatus</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="jugadores-tbody">
+            <tr><td colspan="8" style="text-align:center; color:var(--text2); padding:40px;">
+              Cargando jugadores...
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: Calendario ── -->
+  <section id="section-calendario" style="display:none;">
+    <div class="page-header"><h1>Calendario</h1><p>Próximos partidos de tu equipo</p></div>
+    <div class="card">
+      <div class="section-coming">
+        <div class="coming-icon">📅</div>
+        <h3>Calendario próximamente</h3>
+        <p>El organizador de tu liga generará el calendario de partidos. Te notificaremos cuando esté listo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: Posiciones ── -->
+  <section id="section-posiciones" style="display:none;">
+    <div class="page-header"><h1>Tabla de Posiciones</h1><p>Clasificación actual del torneo</p></div>
+    <div class="card">
+      <div class="section-coming">
+        <div class="coming-icon">📊</div>
+        <h3>Posiciones próximamente</h3>
+        <p>Las posiciones estarán disponibles una vez que el torneo comience y se registren resultados.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECCIÓN: Suscripción ── -->
+  <section id="section-suscripcion" style="display:none;">
+    <div class="page-header"><h1>Mi Suscripción</h1><p>Estado de tu plan mensual</p></div>
+    <div class="suscripcion-card">
+      <div class="suscripcion-status">
+        <div class="status-dot-big active" id="sus-dot"></div>
+        <div>
+          <div style="font-weight:700; font-size:15px;" id="sus-status-text">Cargando...</div>
+          <div style="font-size:12px; color:var(--text2);" id="sus-status-sub"></div>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+        <div>
+          <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:4px;">Plan</div>
+          <div style="font-weight:700; color:var(--text);">Capitán — $99 / mes</div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:4px;">Liga</div>
+          <div style="font-weight:700; color:var(--text);" id="sus-liga">—</div>
+        </div>
+      </div>
+      <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border); font-size:13px; color:var(--text2);">
+        💡 Mantén tu suscripción activa para seguir gestionando tu equipo y jugadores.
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<!-- ══ MODAL: Agregar / Editar Jugador ══ -->
+<div class="modal" id="modal-jugador">
+  <div class="modal-content" style="max-width:660px;">
+    <div class="modal-header">
+      <h3 id="modal-jugador-title">➕ Agregar Jugador</h3>
+      <button class="modal-close" id="close-modal-jugador">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Datos personales -->
+      <div class="form-section-title">📋 Datos del Jugador</div>
+      <input type="hidden" id="jugador-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre completo *</label>
+          <input type="text" id="j-nombre" placeholder="Ej: Juan Pérez García">
+        </div>
+        <div class="form-group">
+          <label>CURP</label>
+          <input type="text" id="j-curp" placeholder="PEGA990101xxxxxx" maxlength="18">
+        </div>
+        <div class="form-group">
+          <label>Número de camiseta</label>
+          <input type="number" id="j-numero" placeholder="10" min="1" max="99">
+        </div>
+        <div class="form-group">
+          <label>Posición</label>
+          <select id="j-posicion">
+            <option value="">— Seleccionar —</option>
+            <option value="Portero">🧤 Portero</option>
+            <option value="Defensa">🛡️ Defensa</option>
+            <option value="Mediocampista">⚙️ Mediocampista</option>
+            <option value="Delantero">⚡ Delantero</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de nacimiento</label>
+          <input type="date" id="j-nacimiento">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" id="j-telefono" placeholder="664-123-4567">
+        </div>
+        <div class="form-group">
+          <label>Peso (kg)</label>
+          <input type="number" id="j-peso" placeholder="70" min="30" max="200" step="0.5">
+        </div>
+        <div class="form-group">
+          <label>Talla (cm)</label>
+          <input type="number" id="j-talla" placeholder="175" min="100" max="250">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:8px;">
+        <label>Domicilio</label>
+        <textarea id="j-domicilio" placeholder="Calle, colonia, ciudad..." rows="2"></textarea>
+      </div>
+
+      <!-- Documentos -->
+      <div class="form-section-title" style="margin-top:20px;">📁 Documentos y Foto</div>
+
+      <div class="form-grid">
+        <!-- Foto del jugador -->
+        <div class="form-group">
+          <label>Foto del jugador (JPG/PNG)</label>
+          <div class="upload-zone" id="zone-foto">
+            <input type="file" id="j-foto" accept=".jpg,.jpeg,.png">
+            <div class="upload-icon">🖼️</div>
+            <div class="upload-label">Clic para subir foto</div>
+            <div class="upload-hint">JPG / PNG · Máx 10 MB</div>
+          </div>
+          <div class="upload-preview" id="preview-foto" style="display:none;">
+            <img class="preview-img" id="preview-foto-img" src="" alt="Vista previa">
+            <span id="preview-foto-name"></span>
+          </div>
+        </div>
+
+        <!-- INE -->
+        <div class="form-group">
+          <label>INE / Credencial de elector (PDF)</label>
+          <div class="upload-zone" id="zone-ine">
+            <input type="file" id="j-ine" accept=".pdf">
+            <div class="upload-icon">🪪</div>
+            <div class="upload-label">Clic para subir INE</div>
+            <div class="upload-hint">PDF · Máx 10 MB</div>
+          </div>
+          <div class="upload-preview" id="preview-ine" style="display:none;">
+            <span style="font-size:20px;">📄</span>
+            <span id="preview-ine-name"></span>
+          </div>
+        </div>
+
+        <!-- Acta de nacimiento -->
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Acta de nacimiento (PDF)</label>
+          <div class="upload-zone" id="zone-acta">
+            <input type="file" id="j-acta" accept=".pdf">
+            <div class="upload-icon">📜</div>
+            <div class="upload-label">Clic para subir Acta de Nacimiento</div>
+            <div class="upload-hint">PDF · Máx 10 MB</div>
+          </div>
+          <div class="upload-preview" id="preview-acta" style="display:none;">
+            <span style="font-size:20px;">📄</span>
+            <span id="preview-acta-name"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="btn-cancelar-jugador">Cancelar</button>
+      <button class="btn btn-success" id="btn-guardar-jugador">💾 Guardar Jugador</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<!-- Modal Selección Mandatoria de Categoría -->
+<div class="lm-modal" id="modal-seleccionar-categoria">
+  <div class="lm-modal-content" style="max-width:450px;">
+    <div class="lm-modal-header">
+      <div class="modal-header-text">
+        <h3>⚽ Selecciona tu Categoría</h3>
+        <p>Para continuar, elige la división de tu equipo.</p>
+      </div>
+    </div>
+    <div class="lm-modal-body">
+      <p style="font-size:13px; color:var(--text2); margin-bottom:15px;">
+        La liga ha habilitado el sistema de categorías. Selecciona la que corresponde a tu equipo para ver tu calendario y tabla de posiciones.
+      </p>
+      <div class="lm-form-group">
+        <label>Categoría *</label>
+        <select id="select-categoria-obligatoria" class="lm-select">
+          <option value="">Cargando categorías...</option>
+        </select>
+      </div>
+    </div>
+    <div class="lm-modal-footer">
+      <button class="btn-modal-primary" id="btn-confirmar-categoria" disabled>Confirmar Selección →</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/captain-dashboard.js"></script>
+</body>
+</html>

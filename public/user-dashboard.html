@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LigaMaster — Panel Organizador</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-text">⚽ LigaMaster</span>
+      <span class="logo-badge">Organizador</span>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section">Mi Liga</span>
+      <a href="user-dashboard.html" class="active"><span class="icon">📊</span> Dashboard</a>
+      <a href="#config-liga"   data-section="config-liga"><span class="icon">⚙️</span> Config. Liga</a>
+      <a href="#equipos"       data-section="equipos"><span class="icon">🏟️</span> Equipos</a>
+      <a href="#campos"        data-section="campos"><span class="icon">📍</span> Campos</a>
+      <a href="#aprobaciones"  data-section="aprobaciones"><span class="icon">✅</span> Aprobaciones <span id="badge-pendientes" style="display:none;background:#e74c3c;color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:4px;"></span></a>
+      <a href="#jugadores"     data-section="jugadores"><span class="icon">👥</span> Jugadores</a>
+      <a href="#partidos"      data-section="partidos"><span class="icon">📅</span> Partidos</a>
+      <a href="#posiciones"    data-section="posiciones"><span class="icon">🏆</span> Posiciones</a>
+      <a href="#goleadores"    data-section="goleadores"><span class="icon">🥅</span> Goleadores</a>
+      <a href="#arbitros"      data-section="arbitros"><span class="icon">🟨</span> Árbitros</a>
+      <span class="nav-section">Cuenta</span>
+      <a href="#" id="btn-logout"><span class="icon">🚪</span> Cerrar sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="sidebar-usuario">Cargando...</div>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Mi Dashboard</h1>
+        <p>Gestiona tu liga, equipos, jugadores, partidos y estadísticas.</p>
+      </div>
+      <div>
+        <button id="btn-generar-rol" class="btn btn-primary">Generar rol automático</button>
+      </div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card blue">
+        <div class="metric-label">Estado de Suscripción</div>
+        <div class="metric-value" id="estado-suscripcion">Cargando...</div>
+        <div class="metric-sub" id="fecha-vencimiento">Verificando...</div>
+      </div>
+      <div class="metric-card green">
+        <div class="metric-label">Jugadores</div>
+        <div class="metric-value" id="total-jugadores">0</div>
+        <div class="metric-sub">Registrados en la liga</div>
+      </div>
+      <div class="metric-card orange">
+        <div class="metric-label">Partidos</div>
+        <div class="metric-value" id="partidos-programados">0</div>
+        <div class="metric-sub">Programados</div>
+      </div>
+      <div class="metric-card purple">
+        <div class="metric-label">Equipos</div>
+        <div class="metric-value" id="total-equipos">0</div>
+        <div class="metric-sub">Registrados</div>
+      </div>
+    </div>
+
+    <!-- ══ CONFIGURACIÓN DE LIGA ══════════════════════════════ -->
+    <section class="content-section" id="config-liga">
+      <div class="section-header">
+        <h2>⚙️ Configuración de Liga</h2>
+        <button class="btn btn-primary" id="btn-save-config-liga">Guardar Configuración</button>
+      </div>
+      <div style="display:grid;gap:20px;max-width:680px;">
+
+        <div class="config-card">
+          <h4>🏟️ Modalidad</h4>
+          <p>Activa las modalidades que manejará esta liga. Puedes habilitar ambas.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+            <label class="config-check-card" id="card-soccer">
+              <input type="checkbox" id="chk-soccer">
+              <span class="config-check-icon">⚽</span>
+              <span class="config-check-label">Fútbol Soccer</span>
+            </label>
+            <label class="config-check-card" id="card-fut7">
+              <input type="checkbox" id="chk-fut7">
+              <span class="config-check-icon">🟢</span>
+              <span class="config-check-label">Fútbol 7</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="bloque-soccer" class="config-card" style="display:none;">
+          <h4>⚽ Categorías — Fútbol Soccer</h4>
+          <p>Selecciona una o más divisiones que apliquen a tu torneo.</p>
+          <div id="cat-soccer-container" style="display:flex;flex-direction:column;gap:12px;margin-top:12px;">
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-soccer" value="Primera División"> Primera División</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-soccer" data-cat="Primera División" placeholder="Precio" value="0"></div>
+            </div>
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-soccer" value="Segunda División"> Segunda División</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-soccer" data-cat="Segunda División" placeholder="Precio" value="0"></div>
+            </div>
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-soccer" value="Tercera División"> Tercera División</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-soccer" data-cat="Tercera División" placeholder="Precio" value="0"></div>
+            </div>
+          </div>
+          <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary btn-sm" id="btn-accept-soccer">Aceptar</button>
+          </div>
+        </div>
+
+        <div id="bloque-fut7" class="config-card" style="display:none;">
+          <h4>🟢 Categorías — Fútbol 7</h4>
+          <p>Selecciona una o más categorías.</p>
+          <div id="cat-fut7-container" style="display:flex;flex-direction:column;gap:12px;margin-top:12px;">
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-fut7" value="Infantil"> Infantil</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-fut7" data-cat="Infantil" placeholder="Precio" value="0"></div>
+            </div>
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-fut7" value="Femenil"> Femenil</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-fut7" data-cat="Femenil" placeholder="Precio" value="0"></div>
+            </div>
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-fut7" value="Juvenil"> Juvenil</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-fut7" data-cat="Juvenil" placeholder="Precio" value="0"></div>
+            </div>
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-fut7" value="Libre"> Libre</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-fut7" data-cat="Libre" placeholder="Precio" value="0"></div>
+            </div>
+            <div class="cat-item">
+              <label class="cat-chip"><input type="checkbox" class="chk-cat-fut7" value="Mixto"> Mixto</label>
+              <div class="cat-price-input"><span class="currency">$</span><input type="number" class="price-cat-fut7" data-cat="Mixto" placeholder="Precio" value="0"></div>
+            </div>
+          </div>
+          <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary btn-sm" id="btn-accept-fut7">Aceptar</button>
+          </div>
+        </div>
+
+        <div id="config-resumen" style="display:none;font-size:13px;color:var(--text2);padding:12px 16px;background:var(--bg3,#12161f);border-radius:8px;"></div>
+      </div>
+    </section>
+
+    <!-- ══ APROBACIONES ════════════════════════════════════════ -->
+    <section class="content-section" id="aprobaciones">
+      <div class="section-header">
+        <h2>✅ Aprobaciones de Jugadores</h2>
+        <button class="btn btn-secondary" id="btn-reload-aprobaciones">🔄 Actualizar</button>
+      </div>
+      <p style="font-size:13px;color:var(--text2);margin:0 0 18px;">
+        Los capitanes suben las solicitudes de alta y baja. Como administrador de liga tienes la última palabra —
+        solo tú puedes <strong>autorizar, rechazar o dar de baja</strong> a jugadores.
+      </p>
+      <div id="aprobaciones-container">
+        <p style="color:var(--text2);text-align:center;padding:30px;">Cargando solicitudes...</p>
+      </div>
+    </section>
+
+    <!-- ══ PARTIDOS ════════════════════════════════════════════ -->
+    <section class="content-section" id="partidos">
+      <div class="section-header">
+        <h2>Próximos Partidos</h2>
+      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <p style="font-size: 13px; color: var(--text2); margin: 0;">Administra el calendario de partidos para tu torneo.</p>
+        <div style="display:flex; gap:10px; align-items: center;">
+          <select id="select-categoria-rol" class="btn btn-ghost" style="padding: 6px 12px; font-size: 13px;">
+            <option value="General">Todas las Categorías (Copa)</option>
+          </select>
+          <button class="btn btn-primary" id="btn-generar-rol">🔄 Generar Rol Automático</button>
+        </div>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Local</th><th>Visitante</th><th>Árbitro</th><th>Resultado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="partidos-table">
+            <tr><td colspan="6" class="empty-state">Cargando partidos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ JUGADORES ══════════════════════════════════════════ -->
+    <section class="content-section" id="jugadores">
+      <div class="section-header">
+        <h2>Todos los Jugadores</h2>
+        <button class="btn btn-secondary" id="btn-agregar-jugador">Agregar Jugador</button>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Equipo</th><th>Posición</th><th>Docs</th><th>Estatus</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="jugadores-table">
+            <tr><td colspan="6" class="empty-state">Cargando jugadores...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ EQUIPOS ════════════════════════════════════════════ -->
+    <section class="content-section" id="equipos">
+      <div class="section-header">
+        <h2>Equipos</h2>
+        <button class="btn btn-secondary" id="btn-agregar-equipo">Agregar Equipo</button>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Entrenador</th><th>Escudo</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="equipos-table">
+            <tr><td colspan="4" class="empty-state">Cargando equipos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ CAMPOS ═════════════════════════════════════════════ -->
+    <section class="content-section" id="campos">
+      <div class="section-header">
+        <h2>Campos (Canchas)</h2>
+        <button class="btn btn-secondary" id="btn-agregar-campo">Agregar Campo</button>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Dirección</th><th>Capacidad</th><th>Estatus</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="campos-table">
+            <tr><td colspan="5" class="empty-state">Cargando campos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ ÁRBITROS ═══════════════════════════════════════════ -->
+    <section class="content-section" id="arbitros">
+      <div class="section-header">
+        <h2>Árbitros</h2>
+        <button class="btn btn-secondary" id="btn-agregar-arbitro">Agregar Árbitro</button>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Certificación</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="arbitros-table">
+            <tr><td colspan="3" class="empty-state">Cargando árbitros...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ POSICIONES ═════════════════════════════════════════ -->
+    <section class="content-section" id="posiciones">
+      <div class="section-header">
+        <h2>🏆 Tabla de Posiciones</h2>
+        <a href="#goleadores" class="btn btn-secondary" style="text-decoration:none;" id="btn-ir-goleadores">🥅 Ver Goleadores</a>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>Pts</th></tr>
+          </thead>
+          <tbody id="posiciones-table">
+            <tr><td colspan="7" class="empty-state">Cargando posiciones...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ GOLEADORES ═════════════════════════════════════════ -->
+    <section class="content-section" id="goleadores">
+      <div class="section-header">
+        <h2>🥅 Tabla de Goleadores</h2>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <a href="#posiciones" class="btn btn-ghost" style="font-size:12px;text-decoration:none;">← Posiciones</a>
+          <button class="btn btn-secondary" id="btn-registrar-gol">+ Registrar Gol</button>
+        </div>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Jugador</th><th>Equipo</th><th>⚽ Goles</th></tr>
+          </thead>
+          <tbody id="goleadores-table">
+            <tr><td colspan="4" class="empty-state">Cargando goleadores...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<!-- ══════════════════ MODALES ══════════════════════════════ -->
+
+<div id="modal-agregar-partido" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>Programar Partido</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Fecha y hora</label><input type="datetime-local" id="form-fecha-hora" required></div>
+        <div class="form-group"><label>Equipo local</label><select id="form-equipo-local" required></select></div>
+        <div class="form-group"><label>Equipo visitante</label><select id="form-equipo-visitante" required></select></div>
+        <div class="form-group"><label>Campo</label><select id="form-campo-partido"></select></div>
+        <div class="form-group"><label>Árbitro</label><select id="form-arbitro"></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-partido">Guardar Partido</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-agregar-jugador" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>Agregar Jugador</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre</label><input type="text" id="form-jugador-nombre" required></div>
+        <div class="form-group"><label>Equipo</label><select id="form-jugador-equipo" required></select></div>
+        <div class="form-group">
+          <label>Posición</label>
+          <select id="form-jugador-posicion" required>
+            <option value="">Selecciona posición</option>
+            <option value="Portero">Portero</option>
+            <option value="Defensa">Defensa</option>
+            <option value="Mediocampista">Mediocampista</option>
+            <option value="Delantero">Delantero</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Número</label><input type="number" id="form-jugador-numero" min="1" max="99"></div>
+        <div class="form-group"><label>Fecha nacimiento</label><input type="date" id="form-jugador-fecha" required></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-jugador">Agregar Jugador</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-agregar-equipo" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>Agregar Equipo</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre del equipo</label><input type="text" id="form-equipo-nombre" required></div>
+        <div class="form-group"><label>Entrenador</label><input type="text" id="form-equipo-entrenador"></div>
+        <div class="form-group"><label>URL de escudo</label><input type="url" id="form-equipo-escudo"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-equipo">Agregar Equipo</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-agregar-campo" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>Agregar Campo</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre de la cancha</label><input type="text" id="form-campo-nombre" required></div>
+        <div class="form-group"><label>Dirección</label><input type="text" id="form-campo-direccion"></div>
+        <div class="form-group"><label>Capacidad</label><input type="number" id="form-campo-capacidad" placeholder="Ej: 500"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-campo">Agregar Campo</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-agregar-arbitro" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>Agregar Árbitro</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre del árbitro</label><input type="text" id="form-arbitro-nombre" required></div>
+        <div class="form-group"><label>Certificación</label><input type="text" id="form-arbitro-certificacion"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-arbitro">Agregar Árbitro</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-registrar-gol" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>Registrar Gol</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Partido</label><select id="form-gol-partido" required></select></div>
+        <div class="form-group"><label>Jugador</label><select id="form-gol-jugador" required></select></div>
+        <div class="form-group"><label>Minuto</label><input type="number" id="form-gol-minuto" min="1" max="120" required></div>
+        <div class="form-group"><label>Autogol</label><select id="form-gol-autogol"><option value="false">No</option><option value="true">Sí</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-gol">Registrar Gol</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-estadisticas-partido" class="modal">
+  <div class="modal-content" style="max-width:800px;">
+    <div class="modal-header"><h3>Estadísticas del Partido</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <div id="est-partido-info" style="margin-bottom:20px;font-weight:bold;text-align:center;"></div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(event,'tab-lineup')">Alineación</button>
+        <button class="tab-btn" onclick="switchTab(event,'tab-eventos')">Goles y Tarjetas</button>
+      </div>
+      <div id="tab-lineup" class="tab-content active">
+        <div class="form-grid">
+          <div><h4 id="est-local-nombre">Local</h4><div id="est-local-lineup" class="lineup-list"></div></div>
+          <div><h4 id="est-visitante-nombre">Visitante</h4><div id="est-visitante-lineup" class="lineup-list"></div></div>
+        </div>
+      </div>
+      <div id="tab-eventos" class="tab-content">
+        <div class="form-group">
+          <label>Nuevo Evento</label>
+          <div style="display:flex;gap:10px;margin-bottom:10px;">
+            <select id="est-form-jugador" style="flex:2;"></select>
+            <select id="est-form-tipo" style="flex:1;">
+              <option value="Gol">Gol</option>
+              <option value="Autogol">Autogol</option>
+              <option value="Tarjeta Amarilla">Tarjeta Amarilla</option>
+              <option value="Tarjeta Roja">Tarjeta Roja</option>
+              <option value="Falta">Falta</option>
+            </select>
+            <input type="number" id="est-form-minuto" placeholder="Min" style="width:60px;">
+            <button class="btn btn-primary" id="btn-add-evento">+</button>
+          </div>
+          <ul id="est-eventos-list" class="eventos-list"></ul>
+        </div>
+      </div>
+      <input type="hidden" id="est-partido-id">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cerrar</button>
+      <button class="btn btn-primary" id="btn-save-estadisticas">Guardar Estadísticas</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-revisar-jugador" class="modal">
+  <div class="modal-content" style="max-width:600px;">
+    <div class="modal-header"><h3>Revisar Jugador</h3><button class="modal-close">&times;</button></div>
+    <div class="modal-body">
+      <h4 id="rev-jugador-nombre" style="margin-bottom:10px;"></h4>
+      <div class="form-grid">
+        <div class="form-group"><strong>Foto:</strong> <a id="rev-jugador-foto" target="_blank" href="#">Ver</a></div>
+        <div class="form-group"><strong>INE:</strong> <a id="rev-jugador-ine" target="_blank" href="#">Ver</a></div>
+        <div class="form-group"><strong>Acta:</strong> <a id="rev-jugador-acta" target="_blank" href="#">Ver</a></div>
+      </div>
+      <div class="form-group" style="margin-top:15px;">
+        <label>Nuevo Estatus</label>
+        <select id="rev-jugador-estatus">
+          <option value="pendiente">Pendiente</option>
+          <option value="autorizado">Autorizado ✅</option>
+          <option value="rechazado">Rechazado ❌</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Observaciones (motivo de rechazo o baja)</label>
+        <textarea id="rev-jugador-obs" rows="3" placeholder="Motivo..."></textarea>
+      </div>
+      <input type="hidden" id="rev-jugador-id">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-revisar-jugador">Guardar Revisión</button>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos propios de esta página -->
+<style>
+.config-card {
+  background: var(--bg2, #1a1f2e);
+  border: 1px solid var(--border, #2a3040);
+  border-radius: 10px; padding: 20px;
+}
+.config-card h4 { margin: 0 0 6px; }
+.config-card p  { font-size: 13px; color: var(--text2); margin: 0; }
+
+.config-check-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px; border-radius: 10px; cursor: pointer;
+  border: 2px solid var(--border, #2a3040);
+  background: var(--bg3, #12161f);
+  transition: border-color .2s, background .2s;
+  user-select: none;
+}
+.config-check-card input { display: none; }
+.config-check-card:has(input:checked) {
+  border-color: var(--primary, #00e676);
+  background: rgba(0,230,118,.09);
+}
+.config-check-icon  { font-size: 1.4rem; }
+.config-check-label { font-weight: 600; }
+
+.cat-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px; cursor: pointer;
+  border: 1px solid var(--border, #2a3040);
+  background: var(--bg3, #12161f); font-size: 13px;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+}
+.cat-chip:has(input:checked) {
+  border-color: var(--primary, #00e676);
+  background: rgba(0,230,118,.10);
+  color: var(--primary, #00e676); font-weight: 600;
+}
+.cat-chip input { display: none; }
+
+.cat-item {
+  display: flex; align-items: center; gap: 12px;
+}
+.cat-price-input {
+  display: flex; align-items: center; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 6px; padding: 0 8px;
+  width: 120px;
+}
+.cat-price-input .currency { font-size: 12px; color: var(--text2); margin-right: 4px; }
+.cat-price-input input {
+  background: transparent; border: none; color: #fff; width: 100%;
+  padding: 6px 0; font-size: 13px; outline: none;
+}
+
+.aprobacion-equipo-card {
+  border: 1px solid var(--border, #2a3040);
+  border-radius: 10px; margin-bottom: 16px; overflow: hidden;
+}
+.aprobacion-equipo-header {
+  background: var(--bg2, #1a1f2e); padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 700;
+}
+.aprobacion-jugador-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; border-top: 1px solid var(--border, #2a3040);
+  flex-wrap: wrap;
+}
+.aprobacion-jugador-info { flex: 1; min-width: 150px; }
+.aprobacion-jugador-info .nombre { font-weight: 600; font-size: .9rem; }
+.aprobacion-jugador-info .meta   { font-size: 11px; color: var(--text2); }
+.aprobacion-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.badge-pend { background:#f39c12; color:#000; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+.badge-baja { background:#e67e22; color:#fff; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+.badge-auto { background:var(--primary,#00e676); color:#000; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+.badge-rech { background:#e74c3c; color:#fff; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+</style>
+
+<script src="js/utils.js"></script>
+<script src="js/user-dashboard.js"></script>
+</body>
+</html>

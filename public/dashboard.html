@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LigaMaster — Panel SuperAdmin</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-text">⚽ LigaMaster</span>
+      <span class="logo-badge">SuperAdmin</span>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section">Principal</span>
+      <a href="dashboard.html" class="active"><span class="icon">📊</span> Dashboard</a>
+      <a href="tenants.html"><span class="icon">🏟️</span> Ligas (Tenants)</a>
+
+      <span class="nav-section">Cuenta</span>
+      <a href="#" id="btn-logout"><span class="icon">🚪</span> Cerrar sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="sidebar-usuario">Cargando...</div>
+    </div>
+  </aside>
+
+  <!-- ════════ CONTENIDO ════════ -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p>Resumen general de la plataforma LigaMaster SaaS</p>
+    </div>
+
+    <!-- Métricas principales -->
+    <div class="metrics-grid" id="metrics-grid">
+      <div class="metric-card green">
+        <div class="metric-label">Ligas Activas</div>
+        <div class="metric-value" id="m-activas"><span class="spinner"></span></div>
+        <div class="metric-sub">Con pago vigente</div>
+      </div>
+      <div class="metric-card red">
+        <div class="metric-label">Ligas Suspendidas</div>
+        <div class="metric-value" id="m-inactivas"><span class="spinner"></span></div>
+        <div class="metric-sub">Requieren pago</div>
+      </div>
+      <div class="metric-card blue">
+        <div class="metric-label">Total Ligas</div>
+        <div class="metric-value" id="m-total"><span class="spinner"></span></div>
+        <div class="metric-sub">En la plataforma</div>
+      </div>
+      <div class="metric-card yellow">
+        <div class="metric-label">Ingresos del Mes</div>
+        <div class="metric-value" id="m-ingresos"><span class="spinner"></span></div>
+        <div class="metric-sub">Pagos confirmados</div>
+      </div>
+    </div>
+
+    <!-- Distribución por plan + Últimas ligas -->
+    <div style="display:grid; grid-template-columns:1fr 2fr; gap:20px;">
+
+      <!-- Distribución por plan -->
+      <div class="card">
+        <div class="card-header">
+          <h3>📦 Por Plan</h3>
+        </div>
+        <div id="planes-lista">
+          <div class="empty-state"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <!-- Últimas ligas registradas -->
+      <div class="card">
+        <div class="card-header">
+          <h3>🕐 Últimas Ligas Registradas</h3>
+          <a href="tenants.html" class="btn btn-ghost btn-sm">Ver todas →</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Liga</th>
+                <th>Plan</th>
+                <th>Estatus</th>
+                <th>Registro</th>
+              </tr>
+            </thead>
+            <tbody id="ultimas-ligas-tbody">
+              <tr><td colspan="4" style="text-align:center; padding:20px; color:var(--text2)">
+                <span class="spinner"></span>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/utils.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

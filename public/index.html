@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LigaMaster — Plataforma Profesional para Ligas de Fútbol</title>
+  <meta name="description" content="LigaMaster es la plataforma SaaS líder para administrar ligas de fútbol. Gestiona equipos, jugadores, calendarios y resultados en un solo lugar.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav class="navbar" id="navbar">
+  <a href="/" class="navbar-logo">
+    <div class="logo-icon">⚽</div>
+    LigaMaster
+  </a>
+  <div class="navbar-links" id="navbar-links">
+    <a href="#about" class="hide-sm">¿Qué es?</a>
+    <a href="#features" class="hide-sm">Características</a>
+    <a href="#roles" class="hide-sm">Planes</a>
+    <a href="login.html" class="btn-nav-login" id="nav-btn-login">Iniciar Sesión</a>
+  </div>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Plataforma #1 para ligas amateur y semiprofesionales
+    </div>
+
+    <h1>
+      Administra tu<br>
+      <span class="highlight-green">Liga de Fútbol</span><br>
+      como un <span class="highlight-blue">Profesional</span>
+    </h1>
+
+    <p class="hero-desc">
+      Crea tu liga, inscribe equipos, gestiona jugadores con documentos oficiales,
+      genera calendarios automáticos y sigue resultados en tiempo real.
+    </p>
+
+    <div class="hero-ctas" id="hero-ctas-container">
+      <button class="btn-hero-primary" id="btn-crear-liga-hero">
+        🏆 Crear mi Liga
+      </button>
+      <button class="btn-hero-secondary" id="btn-inscribir-equipo-hero">
+        ⚽ Inscribir mi Equipo
+      </button>
+      <a href="login.html" class="btn-hero-ghost" id="hero-btn-login">
+        🔑 Iniciar Sesión
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Ligas activas</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="stat-num">8,000+</div>
+        <div class="stat-label">Equipos registrados</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="stat-num">120K+</div>
+        <div class="stat-label">Jugadores inscritos</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="stat-num">99.9%</div>
+        <div class="stat-label">Disponibilidad</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<section class="section" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-tag">Sobre LigaMaster</div>
+        <h2 class="section-title">La plataforma que el fútbol amateur necesitaba</h2>
+        <p>
+          <strong>LigaMaster</strong> nació con una visión clara: llevar la tecnología
+          profesional a las ligas de fútbol sin importar su tamaño.
+          Desde una liga de barrio hasta un torneo regional, nuestra plataforma
+          se adapta a tus necesidades.
+        </p>
+        <p>
+          Con más de 5 años en el mercado, hemos digitalizado la gestión de cientos
+          de ligas en México y Latinoamérica, eliminando el trabajo manual,
+          los errores humanos y permitiendo que los organizadores se centren
+          en lo que importa: <strong>el fútbol</strong>.
+        </p>
+        <p>
+          La plataforma está diseñada para <strong>3 roles</strong>: el administrador
+          de la liga, el capitán de cada equipo y el superintendente de la plataforma.
+          Cada uno con herramientas específicas para su función.
+        </p>
+
+        <div class="about-pillars">
+          <div class="pillar-card">
+            <div class="pillar-icon">🔒</div>
+            <h4>Seguridad Total</h4>
+            <p>Documentos en PDF cifrados y autenticación por JWT</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">⚡</div>
+            <h4>Tiempo Real</h4>
+            <p>Resultados y posiciones actualizadas al instante</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">📱</div>
+            <h4>Responsive</h4>
+            <p>Accede desde cualquier dispositivo, en cualquier momento</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">🤖</div>
+            <h4>Automatización</h4>
+            <p>Calendarios Round Robin generados automáticamente</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-visual">
+        <div class="about-card-stack">
+          <div class="floating-card">
+            <div class="fc-label">Equipos inscritos — Liga Tijuana FC</div>
+            <div class="fc-value">12 equipos</div>
+            <div class="fc-sub">Torneo Apertura 2026 activo</div>
+          </div>
+          <div class="floating-card">
+            <div class="fc-label">Tabla de posiciones</div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+              <div class="fc-row"><div class="fc-dot green"></div><span style="font-size:13px; color:var(--text)">1. FC Barrio Norte — <strong>18 pts</strong></span></div>
+              <div class="fc-row"><div class="fc-dot blue"></div><span style="font-size:13px; color:var(--text)">2. Deportivo Sur — <strong>15 pts</strong></span></div>
+              <div class="fc-row"><div class="fc-dot gold"></div><span style="font-size:13px; color:var(--text)">3. Las Águilas — <strong>12 pts</strong></span></div>
+            </div>
+          </div>
+          <div class="floating-card">
+            <div class="fc-label">Jugadores registrados</div>
+            <div class="fc-value">247 jugadores</div>
+            <div class="fc-sub">✅ Documentos verificados: 231 · ⏳ Pendientes: 16</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="section-tag green">Características</div>
+    <h2 class="section-title">Todo lo que necesitas en un solo lugar</h2>
+    <p class="section-desc">
+      Herramientas profesionales diseñadas para hacer tu vida más fácil
+      y tu liga más organizada.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrap">🏆</div>
+        <h3>Gestión de Ligas</h3>
+        <p>Crea y administra múltiples torneos (Liga, Copa, Grupos), configura tu calendario y gestiona árbitros con facilidad.</p>
+      </div>
+      <div class="feature-card blue">
+        <div class="feature-icon-wrap">⚽</div>
+        <h3>Registro de Equipos</h3>
+        <p>Los capitanes inscriben su equipo, agregan jugadores con foto, INE y acta de nacimiento en PDF directamente desde su panel.</p>
+      </div>
+      <div class="feature-card gold">
+        <div class="feature-icon-wrap">📋</div>
+        <h3>Calendarios Automáticos</h3>
+        <p>Genera el rol de partidos con el algoritmo Round Robin en segundos. Asigna árbitros y horarios de forma automatizada.</p>
+      </div>
+      <div class="feature-card blue">
+        <div class="feature-icon-wrap">📊</div>
+        <h3>Estadísticas en Vivo</h3>
+        <p>Tabla de posiciones, goleadores, tarjetas y resultados actualizados en tiempo real para todos los equipos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">🪪</div>
+        <h3>Documentos Oficiales</h3>
+        <p>Almacena y gestiona INE, acta de nacimiento, foto del jugador y cualquier documento necesario para la inscripción oficial.</p>
+      </div>
+      <div class="feature-card gold">
+        <div class="feature-icon-wrap">💳</div>
+        <h3>Suscripciones Flexibles</h3>
+        <p>Planes de 3 Meses, 6 Meses y 1 Año para organizadores. Capitanes con suscripción mensual. Pagos simples y seguros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ ROLES / PLANES ══════════════════ -->
+<section class="section" id="roles">
+  <div class="section-inner">
+    <div class="section-tag blue">¿Cómo funciona?</div>
+    <h2 class="section-title">Elige tu rol en la plataforma</h2>
+    <p class="section-desc">
+      LigaMaster está diseñado para tres tipos de usuarios.
+      Cada uno con su propio acceso y herramientas.
+    </p>
+
+    <div class="roles-grid">
+
+      <!-- Organizador de Liga -->
+      <div class="role-card featured">
+        <div class="role-badge">Más popular</div>
+        <span class="role-emoji">🏆</span>
+        <h3>Organizador</h3>
+        <p class="role-subtitle">Administra tu propia liga de fútbol</p>
+        <ul class="role-features">
+          <li><span class="check">✓</span> Crear torneos y calendarios</li>
+          <li><span class="check">✓</span> Gestionar equipos inscritos</li>
+          <li><span class="check">✓</span> Registrar resultados y goles</li>
+          <li><span class="check">✓</span> Administrar árbitros</li>
+          <li><span class="check">✓</span> Ver posiciones y estadísticas</li>
+          <li><span class="check">✓</span> Panel privado completo</li>
+        </ul>
+        <div class="role-price">$299 <span>/ mes ($897 x 3 meses)</span></div>
+        <button class="btn-role btn-role-primary" id="btn-crear-liga-rol">
+          🏆 Crear mi Liga
+        </button>
+      </div>
+
+      <!-- Capitán de Equipo -->
+      <div class="role-card">
+        <span class="role-emoji">⚽</span>
+        <h3>Capitán</h3>
+        <p class="role-subtitle">Inscribe y gestiona tu equipo</p>
+        <ul class="role-features">
+          <li><span class="check">✓</span> Inscribir su equipo en una liga</li>
+          <li><span class="check">✓</span> Dar de alta jugadores</li>
+          <li><span class="check">✓</span> Subir fotos e INE de jugadores</li>
+          <li><span class="check">✓</span> Subir actas de nacimiento (PDF)</li>
+          <li><span class="check">✓</span> Ver calendario de partidos</li>
+          <li><span class="check">✓</span> Gestionar plantilla completa</li>
+        </ul>
+        <div class="role-price">$99 <span>/ mes</span></div>
+        <button class="btn-role btn-role-secondary" id="btn-inscribir-equipo-rol">
+          ⚽ Inscribir mi Equipo
+        </button>
+      </div>
+
+      <!-- Login para existentes -->
+      <div class="role-card">
+        <span class="role-emoji">🔑</span>
+        <h3>Ya tengo cuenta</h3>
+        <p class="role-subtitle">Accede a tu panel de control</p>
+        <ul class="role-features">
+          <li><span class="check">✓</span> Acceso a tu panel</li>
+          <li><span class="check">✓</span> Ver datos en tiempo real</li>
+          <li><span class="check">✓</span> Gestionar desde cualquier lugar</li>
+          <li><span class="check">✓</span> Soporte técnico incluido</li>
+          <li><span class="check">✓</span> Historial completo</li>
+          <li><span class="check">✓</span> Notificaciones y recordatorios</li>
+        </ul>
+        <div class="role-price" style="color:var(--text2);">—</div>
+        <a href="login.html" class="btn-role btn-role-ghost">
+          🔑 Iniciar Sesión
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA FINAL ══════════════════ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>¿Listo para digitalizar<br>tu liga? <span style="background:var(--grad-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Empieza hoy.</span></h2>
+    <p>Únete a cientos de ligas que ya confían en LigaMaster. Sin complicaciones, sin papeles, sin excusas.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <button class="btn-hero-primary" id="btn-crear-liga-cta">🏆 Crear mi Liga gratis</button>
+      <button class="btn-hero-secondary" id="btn-inscribir-equipo-cta">⚽ Inscribir mi Equipo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand-name">⚽ LigaMaster</div>
+      <p>La plataforma SaaS líder para la gestión profesional de ligas de fútbol amateur y semiprofesional en México y Latinoamérica.</p>
+      <div style="font-size:12px; color:var(--text3);">contacto@ligamaster.com</div>
+    </div>
+    <div class="footer-col">
+      <h5>Plataforma</h5>
+      <a href="#about">¿Qué es LigaMaster?</a>
+      <a href="#features">Características</a>
+      <a href="#roles">Planes y precios</a>
+      <a href="login.html">Iniciar sesión</a>
+    </div>
+    <div class="footer-col">
+      <h5>Para usuarios</h5>
+      <a href="#" id="footer-crear-liga">Crear una Liga</a>
+      <a href="#" id="footer-inscribir-equipo">Inscribir un Equipo</a>
+      <a href="login.html">Acceder a mi panel</a>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <a href="#">Términos de servicio</a>
+      <a href="#">Política de privacidad</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 LigaMaster SaaS. Todos los derechos reservados.</span>
+    <span>Hecho con ⚽ y mucha pasión por el fútbol</span>
+  </div>
+</footer>
+
+<!-- ══════════════════ MODAL: CREAR LIGA ══════════════════ -->
+<div class="lm-modal-overlay" id="modal-liga">
+  <div class="lm-modal">
+
+    <!-- Paso 1: Datos de la Liga -->
+    <div class="modal-step active" id="liga-step-1">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>🏆 Crear mi Liga</h3>
+          <p>Paso 1 de 3 — Datos de tu liga</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-liga">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot active" id="liga-dot-1"></div>
+        <div class="progress-step-dot" id="liga-dot-2"></div>
+        <div class="progress-step-dot" id="liga-dot-3"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div class="lm-form-group">
+          <label>Nombre de tu Liga *</label>
+          <input type="text" id="liga-nombre" placeholder="Ej: Liga Municipal Tijuana FC" maxlength="150">
+        </div>
+        <div class="lm-form-row">
+          <div class="lm-form-group">
+            <label>Ciudad</label>
+            <input type="text" id="liga-ciudad" placeholder="Tijuana, B.C.">
+          </div>
+          <div class="lm-form-group">
+            <label>Teléfono de contacto</label>
+            <input type="tel" id="liga-telefono" placeholder="664-123-4567">
+          </div>
+        </div>
+        <div class="lm-form-group">
+          <label>Plan de suscripción *</label>
+          <select id="liga-plan">
+            <option value="3 Meses">⏳ 3 Meses — $897 (habilita la liga completa)</option>
+            <option value="6 Meses">⏳ 6 Meses — $1,554 (descuento aplicado)</option>
+            <option value="1 Año">⏳ 1 Año — $2,748 (descuento anual aplicado)</option>
+          </select>
+        </div>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" data-close="modal-liga">Cancelar</button>
+        <button class="btn-modal-primary" id="liga-next-1">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Paso 2: Datos del Organizador -->
+    <div class="modal-step" id="liga-step-2">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>🏆 Crear mi Liga</h3>
+          <p>Paso 2 de 3 — Tu cuenta de organizador</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-liga">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot active"></div>
+        <div class="progress-step-dot"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div class="lm-form-group">
+          <label>Tu nombre completo *</label>
+          <input type="text" id="liga-admin-nombre" placeholder="Carlos Mendoza">
+        </div>
+        <div class="lm-form-group">
+          <label>Correo electrónico *</label>
+          <input type="email" id="liga-admin-email" placeholder="tu@correo.com">
+        </div>
+        <div class="lm-form-row">
+          <div class="lm-form-group">
+            <label>Contraseña *</label>
+            <input type="password" id="liga-admin-pass" placeholder="Mínimo 6 caracteres">
+          </div>
+          <div class="lm-form-group">
+            <label>Confirmar contraseña *</label>
+            <input type="password" id="liga-admin-pass2" placeholder="Repite tu contraseña">
+          </div>
+        </div>
+        <p style="font-size:12px; color:var(--text2); margin-top:8px;">
+          🔒 Tu contraseña está cifrada. LigaMaster nunca la verá en texto plano.
+        </p>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" id="liga-back-2">← Atrás</button>
+        <button class="btn-modal-primary" id="liga-next-2">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Paso 3: Pago simulado -->
+    <div class="modal-step" id="liga-step-3">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>🏆 Crear mi Liga</h3>
+          <p>Paso 3 de 3 — Activar suscripción</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-liga">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot active"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div class="pago-box">
+          <span class="pago-icon">💳</span>
+          <h4>Activa tu Liga</h4>
+          <p>Tu cuenta ya está creada. Realiza el pago para activar tu liga y comenzar a usarla.</p>
+          <div class="pago-amount" id="liga-pago-monto">$299</div>
+          <div class="pago-period">por mes · cancela cuando quieras</div>
+          <div class="pago-methods">
+            <div class="pago-method selected" id="pm-tarjeta">💳 Tarjeta</div>
+            <div class="pago-method" id="pm-oxxo">🏪 OXXO Pay</div>
+            <div class="pago-method" id="pm-transferencia">🏦 Transferencia</div>
+          </div>
+          <p style="font-size:11px; color:var(--text3);">🔒 Pago simulado — no se realiza ningún cargo real</p>
+        </div>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" id="liga-back-3">← Atrás</button>
+        <button class="btn-modal-primary" id="liga-pagar">
+          ✅ Confirmar y Activar
+        </button>
+      </div>
+    </div>
+
+    <!-- Paso 4: Éxito -->
+    <div class="modal-step" id="liga-step-4">
+      <div class="lm-modal-body">
+        <div class="success-box">
+          <span class="success-ani">🎉</span>
+          <h3>¡Liga creada con éxito!</h3>
+          <p id="liga-success-msg">Tu liga está activa. Inicia sesión para configurar tu primer torneo.</p>
+          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a href="login.html" class="btn-modal-primary">🔑 Iniciar Sesión</a>
+            <button class="btn-modal-secondary" data-close="modal-liga">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════ MODAL: INSCRIBIR EQUIPO ══════════════════ -->
+<div class="lm-modal-overlay" id="modal-equipo">
+  <div class="lm-modal">
+
+    <!-- Paso 1: Buscar Liga -->
+    <div class="modal-step active" id="equipo-step-1">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>⚽ Inscribir mi Equipo</h3>
+          <p>Paso 1 de 4 — Busca tu liga</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-equipo">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot active"></div>
+        <div class="progress-step-dot"></div>
+        <div class="progress-step-dot"></div>
+        <div class="progress-step-dot"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div class="lm-form-group">
+          <label>Busca tu liga para inscribirte *</label>
+          <div class="liga-search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="liga-search-input" placeholder="Escribe el nombre de la liga...">
+          </div>
+          <div class="liga-results" id="liga-search-results"></div>
+        </div>
+
+        <div id="liga-selected-container" style="display:none;">
+          <label style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; color:var(--text2); margin-bottom:7px; display:block;">Liga seleccionada</label>
+          <div class="liga-selected-box">
+            <span style="font-size:24px;">🏆</span>
+            <div>
+              <div class="liga-name" id="liga-selected-name">—</div>
+              <div class="liga-plan" id="liga-selected-plan">—</div>
+            </div>
+            <button id="btn-cambiar-liga" style="margin-left:auto; background:none; border:1px solid var(--border2); color:var(--text2); padding:5px 10px; border-radius:6px; cursor:pointer; font-size:12px;">Cambiar</button>
+          </div>
+        </div>
+
+        <p id="no-ligas-msg" style="display:none; font-size:13px; color:var(--text2); margin-top:12px; text-align:center;">
+          No se encontraron ligas activas con ese nombre.
+        </p>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" data-close="modal-equipo">Cancelar</button>
+        <button class="btn-modal-primary" id="equipo-next-1" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Paso 2: Nombre del Equipo -->
+    <div class="modal-step" id="equipo-step-2">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>⚽ Inscribir mi Equipo</h3>
+          <p>Paso 2 de 4 — Nombre de tu equipo</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-equipo">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot active"></div>
+        <div class="progress-step-dot"></div>
+        <div class="progress-step-dot"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div style="background:rgba(0,230,118,0.07); border:1px solid rgba(0,230,118,0.2); border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:13px; color:var(--text2);">
+          Inscribiéndote en: <strong id="equipo-liga-label" style="color:var(--green)">—</strong>
+        </div>
+        <div class="lm-form-group" style="margin-top:15px;">
+          <label>Categoría a la que te inscribes *</label>
+          <select id="equipo-categoria" class="lm-select">
+            <option value="">Cargando categorías...</option>
+          </select>
+        </div>
+        <p style="font-size:12px; color:var(--text2); margin-top:4px;">
+          El nombre debe ser único dentro de la liga y la categoría.
+        </p>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" id="equipo-back-2">← Atrás</button>
+        <button class="btn-modal-primary" id="equipo-next-2" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Paso 3: Datos del Capitán -->
+    <div class="modal-step" id="equipo-step-3">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>⚽ Inscribir mi Equipo</h3>
+          <p>Paso 3 de 4 — Tu cuenta de capitán</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-equipo">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot active"></div>
+        <div class="progress-step-dot"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div class="lm-form-group">
+          <label>Tu nombre completo *</label>
+          <input type="text" id="capitan-nombre" placeholder="Juan Pérez García">
+        </div>
+        <div class="lm-form-group">
+          <label>Correo electrónico *</label>
+          <input type="email" id="capitan-email" placeholder="tu@correo.com">
+        </div>
+        <div class="lm-form-row">
+          <div class="lm-form-group">
+            <label>Contraseña *</label>
+            <input type="password" id="capitan-pass" placeholder="Mínimo 6 caracteres">
+          </div>
+          <div class="lm-form-group">
+            <label>Confirmar contraseña *</label>
+            <input type="password" id="capitan-pass2" placeholder="Repite tu contraseña">
+          </div>
+        </div>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" id="equipo-back-3">← Atrás</button>
+        <button class="btn-modal-primary" id="equipo-next-3">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Paso 4: Pago -->
+    <div class="modal-step" id="equipo-step-4">
+      <div class="lm-modal-header">
+        <div class="modal-header-text">
+          <h3>⚽ Inscribir mi Equipo</h3>
+          <p>Paso 4 de 4 — Activar suscripción</p>
+        </div>
+        <button class="lm-modal-close" data-close="modal-equipo">✕</button>
+      </div>
+      <div class="modal-progress">
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot done"></div>
+        <div class="progress-step-dot active"></div>
+      </div>
+      <div class="lm-modal-body">
+        <div class="pago-box">
+          <span class="pago-icon">💳</span>
+          <h4>Activa tu Equipo</h4>
+          <p>Tu cuenta está lista. Paga tu suscripción mensual y podrás gestionar tu equipo y jugadores.</p>
+          <div class="pago-amount" id="equipo-pago-monto">$99</div>
+          <div class="pago-period" id="equipo-pago-periodo">por torneo · inscripción única</div>
+          <div class="pago-methods">
+            <div class="pago-method selected">💳 Tarjeta</div>
+            <div class="pago-method">🏪 OXXO Pay</div>
+            <div class="pago-method">🏦 Transferencia</div>
+          </div>
+          <p style="font-size:11px; color:var(--text3);">🔒 Pago simulado — no se realiza ningún cargo real</p>
+        </div>
+      </div>
+      <div class="lm-modal-footer">
+        <button class="btn-modal-secondary" id="equipo-back-4">← Atrás</button>
+        <button class="btn-modal-primary" id="equipo-pagar">
+          ✅ Confirmar y Activar
+        </button>
+      </div>
+    </div>
+
+    <!-- Éxito -->
+    <div class="modal-step" id="equipo-step-5">
+      <div class="lm-modal-body">
+        <div class="success-box">
+          <span class="success-ani">🎉</span>
+          <h3>¡Equipo inscrito!</h3>
+          <p id="equipo-success-msg">Tu equipo está registrado. Inicia sesión para agregar a tus jugadores.</p>
+          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a href="login.html" class="btn-modal-primary">🔑 Ir a mi Panel</a>
+            <button class="btn-modal-secondary" data-close="modal-equipo">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="lm-toast"></div>
+
+<script src="js/landing.js"></script>
+</body>
+</html>
