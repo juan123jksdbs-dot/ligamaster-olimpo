@@ -237,23 +237,31 @@ const registroCapitan = async (req, res) => {
     );
     const usuarioId = uRes.rows[0].id;
 
-    // Obtener torneo activo de la liga (si hay)
-    const torRes = await client.query(
+    // Obtener torneo activo de la liga o crear uno por defecto
+    let torRes = await client.query(
       `SELECT id FROM torneos WHERE tenant_id = $1 AND estatus = 'Activo' LIMIT 1`,
       [tenant_id]
     );
-    
-    let equipoId = null;
-    if (torRes.rows.length > 0) {
-      const torneoId = torRes.rows[0].id;
-      // Crear equipo en el torneo activo con categoría
-      const eqRes = await client.query(
-        `INSERT INTO equipos (tenant_id, torneo_id, nombre, capitan_id, categoria)
-         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-        [tenant_id, torneoId, nombre_equipo.trim(), usuarioId, categoria || null]
+
+    let torneoId;
+    if (torRes.rows.length === 0) {
+      const nuevoTor = await client.query(
+        `INSERT INTO torneos (tenant_id, nombre, formato)
+         VALUES ($1, 'Torneo Apertura', 'Liga') RETURNING id`,
+        [tenant_id]
       );
-      equipoId = eqRes.rows[0].id;
+      torneoId = nuevoTor.rows[0].id;
+    } else {
+      torneoId = torRes.rows[0].id;
     }
+    
+    // Crear equipo en el torneo activo con categoría
+    const eqRes = await client.query(
+      `INSERT INTO equipos (tenant_id, torneo_id, nombre, capitan_id, categoria)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [tenant_id, torneoId, nombre_equipo.trim(), usuarioId, categoria || null]
+    );
+    const equipoId = eqRes.rows[0].id;
 
     // Crear registro capitán (suscripcion_activa = FALSE hasta que pague)
     await client.query(
